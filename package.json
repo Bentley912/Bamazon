@@ -1,0 +1,27 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "package for bamazon app",
+  "main": "bamazon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bentley912/Bamazon.git"
+  },
+  "keywords": [
+    "bamazon",
+    "package"
+  ],
+  "author": "PBentley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bentley912/Bamazon/issues"
+  },
+  "homepage": "https://github.com/Bentley912/Bamazon#readme",
+  "dependencies": {
+    "mysql": "^2.13.0",
+    "prompt": "^1.0.0"
+  }
+}
