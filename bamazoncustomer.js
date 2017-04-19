@@ -46,7 +46,6 @@ function purchase(){
         for(var i = 0; i <res.length; i++){
             console.log(res[i].id + " " + res[i].product_name + " | Department: " + res[i].department_name + " | Price: " + res[i].price + " | In Stock: " + res[i].stock_quantity );
             var price = purchaseQuantity * res[i].price;
-            console.log(price);
             if (purchaseQuantity > res[i].stock_quantity){
               console.log("We do not have enough of this Item in Stock to Fulfill Your Request");
             }
@@ -56,7 +55,6 @@ function purchase(){
             }
             connection.query("UPDATE products SET stock_quantity=? WHERE  id =?", [stockUpdate, purchaseId], function(err,res){
                   console.log('Your purchase has been processed. Thank You for Your Business');
-                  console.log(result);    
               })
         }       
       });  
