@@ -25,12 +25,7 @@ function begin(){
       }   
      
   });
-}
-
-function purchaseQuery(){
-  
-}
-
+};
 
 function purchase(){
     var schema = {
@@ -47,28 +42,31 @@ function purchase(){
     prompt.get(schema, function (err, result) {
       purchaseId = parseInt(result.item);
       purchaseQuantity = parseInt(result.quantity);
-      console.log(purchaseId);
-      console.log(purchaseQuantity);
+      console.log("Here is the purchase quantity "+ purchaseQuantity);
       console.log("Here is the purchase id: " + purchaseId);
       connection.query("SELECT * FROM products WHERE ?", {id:purchaseId}, function(err,res){  
-      console.log(res);  
+        for(var i = 0; i <res.length; i++){
+            console.log(res[i].id + " " + res[i].product_name + " | Department: " + res[i].department_name + " | Price: " + res[i].price + " | In Stock: " + res[i].stock_quantity );
+            var price = purchaseQuantity * res[i].price;
+            console.log(price);
 
-      if (purchaseQuantity > res.stock_quantity){
-        console.log("Sorry, we do not have enough stock currently to fulfill your request")
-      }
-      else{
-        connection.query("UPDATE products SET stock_quantity = stock_quantity - ?  WHERE id = ?", [
-          purchaseQuantity,purchaseId
-        ], function(err, res) {
-          if (err) throw err;
-          var price = purchaseQuantity * res.price;
-          console.log(price);
-        });
-      }
-
-  })
-    });
-    
+            if (purchaseQuantity > res[i].stock_quantity){
+              console.log("We do not have enough of this Item in Stock to Fulfill Your Request");
+            }
+            else{
+              console.log ("Your Purchase Price is "+ price);
+              var stockUpdate = res[i].stock_quantity - purchaseQuantity;
+              console.log(stockUpdate);
+              connection.query("UPDATE products SET stock_quantity=? WHERE  id =?", [stockUpdate, purchaseId], function(err,res){
+                for(var i =0;i<res.length;i++){
+                  console.log('Your purchase has been processed');
+                  console.log(result);
+                }
+              })
+            }
+        }       
+      });  
+  });
 }
 
 begin();
