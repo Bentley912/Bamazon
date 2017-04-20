@@ -11,6 +11,8 @@ var connection = mysql.createConnection({
     database: "bamazon" 
 });
 
+
+
 connection.connect(function(err){
     if (err) throw err;
     console.log("connencted as id " + connection.threadId);
@@ -53,6 +55,11 @@ function managerBegin(){
        } 
 
        else if (answers.choice === 'Add to Inventory'){
+           var newQuantity;
+           var addId;
+           var addQuantity;
+
+           var Quantity;
            inquirer.prompt([/* Pass your questions in here */
                 {
                   type:'input',
@@ -62,22 +69,61 @@ function managerBegin(){
                 {
                  type:'input',
                   name:'quantity',
-                  message:'Please enter the quantity you would like to add:'   
+                  message:'Please enter the quantity you would like to Update:'   
                 }
 
            
            ]).then(function (answers) {
-                var addId = parseInt(answers.id);
-                var addQuantity = parseInt(answers.quantity);
-                connection.query("UPDATE products SET stock_quantity + ? WHERE  id =?", [addQuantity, addId], function(err,res){
-                    console.log('Your purchase has been processed. Thank You for Your Business');
-                    for (var i = 0; i < res.length; i++){
-                        console.log(res[i].id + " " + res[i].product_name + " | Department: " + res[i].department_name + " | Price: " + res[i].price + " | In Stock: " + res[i].stock_quantity );
-                    }
-                })
+                addId = parseInt(answers.id);
+                addQuantity = parseInt(answers.quantity);
+                connection.query("SELECT * FROM products WHERE ?", {id:addId}, function(err,res){ 
+                    for(var i=0; i<res.length; i++){
+                        console.log(res[i].id + " " + res[i].product_name + " | Department: " + res[i].department_name + " | Price: " + res[i].price + " | In Stock: " + res[i].stock_quantity );     
+                        newQuantity = res[i].stock_quantity + addQuantity;
+                        console.log(newQuantity);
+                        connection.query("UPDATE products SET stock_quantity=? WHERE  id =?", [newQuantity, addId], function(err,res){
+                        console.log('Your purchase has been processed. Thank You for Your Business');
+                         })
+                    }                    
+                })               
             });
-       }          
-        
+       }   
+
+       else if (answers.choice === 'Add New Products'){
+            inquirer.prompt([
+                {
+                  type:'input',
+                  name:'name',
+                  message:'Please enter Name of Item you wish to Add: '
+                },
+                {
+                    type:'input',
+                    name:'department',
+                    message: 'Please Enter the Department Name of the Item You are adding(e.g. Electronics): '
+                },
+                {
+                    type:'input',
+                    name: 'price',
+                    message: 'Please Enter the Price of the Item: '
+                },
+                {
+                    type:'input',
+                    name: 'quantity',
+                    message: 'Please enter the Quantity to be Added to the Inventory: '
+                }
+            ]).then(function (answers) {
+               console.log(answers.name);
+               console.log(answers.department);
+               console.log(answers.price);
+               console.log(answers.quantity);
+               connection.query("INSERT INTO products SET ?", {product_name:answers.name, department_name:answers.department, price:parseInt(answers.price), stock_quantity:parseInt(answers.quantity)}, function(err, res) {
+                   if (err)throw err;
+                   console.log("Prouct Added. ")
+               });
+
+            });
+       }
+
     });
 
 }
