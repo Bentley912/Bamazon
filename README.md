@@ -3,12 +3,12 @@
 ## Challenge 1 - BamazonCustomer.js 
   Another activity tackled in my coding bootcamp. This time, I was tasked with creating an Amazon-like storefront with the MySQL. The app  takes in orders from customers and deplete stock from the store's inventory.
   
-  ###Dependencies
-    ####node-modules
+###Dependencies
+####node-modules
    * Inquirer
    * mysql 
    
-  ### Functionality 
+### Functionality 
 *The app should then prompt users with two messages.
 *The first should ask them the ID of the product they would like to buy.
 *The second message should ask how many units of the product they would like to buy.
