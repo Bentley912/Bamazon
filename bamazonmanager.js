@@ -123,9 +123,7 @@ function managerBegin(){
 
             });
        }
-
     });
-
 }
 
 managerBegin();
